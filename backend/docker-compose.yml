@@ -1,0 +1,38 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "9000:9000"
+    volumes:
+      - .:/var/www
+    networks:
+      - app-network
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: 127.0.0.1  # ou mysql, se você estiver usando o serviço MySQL no Docker
+      DB_PORT: 3306
+      DB_DATABASE: hospital
+      DB_USERNAME: root
+      DB_PASSWORD: ""  # Adicione a senha se houver, caso contrário, deixe vazio
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: ""  # Adicione a senha do root, se houver
+      MYSQL_DATABASE: hospital
+      MYSQL_USER: root
+      MYSQL_PASSWORD: ""  # Adicione a senha se houver, caso contrário, deixe vazio
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mysql_data:

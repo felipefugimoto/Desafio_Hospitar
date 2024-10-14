@@ -1,0 +1,46 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./backend:/var/www
+    networks:
+      - app-network
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_DATABASE: hospital
+      DB_USERNAME: root
+      DB_PASSWORD: ""
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./frontend:/app
+    networks:
+      - app-network
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: ""  # Senha para o usuário root do MySQL
+      MYSQL_DATABASE: hospital
+      MYSQL_USER: root
+      MYSQL_PASSWORD: ""  # Senha para o usuário root do MySQL
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mysql_data:

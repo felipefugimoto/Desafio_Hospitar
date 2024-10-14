@@ -1,0 +1,20 @@
+# Dockerfile para Vue.js
+FROM node:14
+
+# Configura o diretório de trabalho
+WORKDIR /app
+
+# Copia os arquivos do frontend para o container
+COPY . .
+
+# Instala as dependências do Vue.js
+RUN npm install
+
+# Compila o projeto
+RUN npm run build
+
+# Expõe a porta que o aplicativo irá usar
+EXPOSE 8080
+
+# Comando para iniciar o servidor
+CMD ["npm", "run", "serve"]
