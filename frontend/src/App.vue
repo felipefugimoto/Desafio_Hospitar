@@ -1,11 +1,19 @@
 <script setup lang="ts">
-import { RouterView } from 'vue-router'
+import { onMounted } from 'vue';
+import { useStore } from 'vuex'; // Importa useStore do Vuex
+import { RouterView } from 'vue-router';
 import Sidebar from './components/Sidebar.vue';
-
+import Tobar from './components/Tobar.vue';
 import Footer from './components/Footer.vue';
 
+const store = useStore(); // Obtém a instância da store
 
-
+// Usando onMounted para chamar a ação getPacientes quando o componente for montado
+onMounted(() => {
+  store.dispatch('getPacientes').finally(() => {
+    console.log('Ação getPacientes chamada com sucesso!');
+  });
+});
 </script>
 
 <template>
@@ -19,18 +27,23 @@ import Footer from './components/Footer.vue';
     <!-- End of Sidebar -->
 
 
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
+    <!-- Begin Page Content -->
+    <div class="container-fluid">
+      <!-- Topbar -->
+      <Tobar />
+      <!-- End of Topbar -->
 
-      <!-- Main Content -->
-      <RouterView />
-      <!-- End of Main Content -->
+      <!-- Content Wrapper -->
+      <div id="content-wrapper" class="d-flex flex-column">
 
-      <!-- Footer -->
-      <Footer />
-      <!-- End of Footer -->
+        <!-- Main Content -->
+        <RouterView />
+        <!-- End of Main Content -->
 
+
+      </div>
     </div>
+
     <!-- End of Content Wrapper -->
 
   </div>
@@ -47,6 +60,8 @@ import Footer from './components/Footer.vue';
 
 
 </template>
+
+
 
 <style>
 @import url(/src/assets/vendor/fontawesome-free/css/all.min.css);
